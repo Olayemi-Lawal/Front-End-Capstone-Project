@@ -1,60 +1,35 @@
-import { User } from '../types';
+private storageKey = 'moviehub_user'; // define this at the top of your class
 
-class AuthService {
-  private storageKey = 'moviehub_user';
+async login(email: string, password: string): Promise<User> {
+  const response = await fetch('https://capstone-back-end-1-bbvp.onrender.com/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
 
-  async login(email: string, password: string): Promise<User> {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock validation
-    if (email === 'demo@moviehub.com' && password === 'demo123') {
-      const user: User = {
-        id: '1',
-        name: 'Demo User',
-        email,
-        avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150',
-        watchlist: [550, 680, 155],
-        ratings: { 550: 5, 680: 4, 155: 4 },
-        createdAt: new Date().toISOString(),
-      };
-      
-      localStorage.setItem(this.storageKey, JSON.stringify(user));
-      return user;
-    }
-    
-    throw new Error('Invalid credentials');
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Login failed');
   }
 
-  async register(name: string, email: string, password: string): Promise<User> {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const user: User = {
-      id: Date.now().toString(),
-      name,
-      email,
-      watchlist: [],
-      ratings: {},
-      createdAt: new Date().toISOString(),
-    };
-    
-    localStorage.setItem(this.storageKey, JSON.stringify(user));
-    return user;
-  }
-
-  async getCurrentUser(): Promise<User | null> {
-    const userData = localStorage.getItem(this.storageKey);
-    return userData ? JSON.parse(userData) : null;
-  }
-
-  logout(): void {
-    localStorage.removeItem(this.storageKey);
-  }
-
-  updateUser(user: User): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(user));
-  }
+  localStorage.setItem(this.storageKey, JSON.stringify(data));
+  return data;
 }
 
-export const authService = new AuthService();
+async register(name: string, email: string, password: string): Promise<User> {
+  const response = await fetch('https://capstone-back-end-1-bbvp.onrender.com/api/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, password }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Registration failed');
+  }
+
+  localStorage.setItem(this.storageKey, JSON.stringify(data));
+  return data;
+}

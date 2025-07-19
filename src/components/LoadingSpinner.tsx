@@ -13,7 +13,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'medium', classN
   };
 
   return (
-    <div className={`inline-block animate-spin rounded-full border-2 border-solid border-primary-600 border-r-transparent ${sizeClasses[size]} ${className}`}>
+    <div className={`inline-block animate-spin rounded-full border-2 border-solid border-blue-600 border-r-transparent ${sizeClasses[size]} ${className}`}>
       <span className="sr-only">Loading...</span>
     </div>
   );
