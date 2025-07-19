@@ -1,8 +1,9 @@
-import React from 'react';
+// src/App.jsx or App.tsx (React Frontend)
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+
 import Header from './components/Header';
-import Home from './pages/Home';
+import { Home } from './pages/Home'; // ✅ named import
 import MovieDetails from './pages/MovieDetails';
 import Search from './pages/Search';
 import Discover from './pages/Discover';
